@@ -1,0 +1,273 @@
+/* =========================================
+   VARIABLES GENERALES
+   Aquí puedes cambiar colores y tamaños
+========================================= */
+:root {
+  --color-fondo: #f3f5f1;
+  --color-tarjeta: #f8f8f8;
+  --color-borde: #d9d9d9;
+  --color-borde-suave: #e4e4e4;
+  --color-verde: #078f36;
+  --color-verde-hover: #05792d;
+  --color-texto: #111827;
+  --color-texto-secundario: #6b7280;
+  --color-input: #f0f0f2;
+  --color-blanco: #ffffff;
+  --fuente-base: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --radio-general: 18px;
+  --radio-input: 10px;
+}
+
+/* =========================================
+   RESETEO BÁSICO
+========================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fuente-base);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+/* =========================================
+   CONTENEDOR PRINCIPAL
+========================================= */
+.pagina-registro {
+  min-height: 100vh;
+  width: 100%;
+  padding: 6px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================================
+   CABECERA SUPERIOR
+========================================= */
+.hero-registro {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+  margin-top: 2px;
+  margin-bottom: 28px;
+}
+
+.logo-img {
+  width: 125px;
+  height: 125px;
+  object-fit: contain;
+}
+
+.titulo-principal {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.subtitulo {
+  font-size: 1rem;
+  color: var(--color-texto-secundario);
+}
+
+/* =========================================
+   TARJETA PRINCIPAL
+========================================= */
+.tarjeta-registro {
+  width: 100%;
+  max-width: 675px;
+  background-color: var(--color-tarjeta);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-general);
+  padding: 22px 24px 26px;
+}
+
+.titulo-bloque {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.texto-ayuda {
+  font-size: 0.95rem;
+  color: var(--color-texto-secundario);
+  margin-bottom: 24px;
+}
+
+/* =========================================
+   ESTRUCTURA DEL FORMULARIO
+========================================= */
+.formulario-registro {
+  width: 100%;
+}
+
+.seccion-formulario {
+  width: 100%;
+}
+
+.subtitulo-seccion {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.grid-formulario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 16px;
+}
+
+/* Campo normal */
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Campo que ocupa todo el ancho */
+.grupo-ancho-completo {
+  grid-column: 1 / -1;
+}
+
+/* Campo que solo ocupa una columna */
+.grupo-ancho-medio {
+  grid-column: 1 / 2;
+}
+
+.grupo-campo label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #111111;
+}
+
+.grupo-campo input {
+  width: 100%;
+  height: 36px;
+  border: none;
+  outline: none;
+  border-radius: var(--radio-input);
+  background-color: var(--color-input);
+  padding: 0 14px;
+  font-size: 0.95rem;
+  color: var(--color-texto);
+}
+
+.grupo-campo input::placeholder {
+  color: #8a8fa1;
+}
+
+.grupo-campo input:focus {
+  box-shadow: 0 0 0 2px rgba(7, 143, 54, 0.18);
+}
+
+/* =========================================
+   SEPARADOR
+========================================= */
+.separador {
+  border: none;
+  border-top: 1px solid var(--color-borde);
+  margin: 22px 0 26px;
+}
+
+/* =========================================
+   BOTONES INFERIORES
+========================================= */
+.acciones-formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.btn {
+  height: 36px;
+  border-radius: 9px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Botón verde principal */
+.btn-verde {
+  border: none;
+  background-color: var(--color-verde);
+  color: var(--color-blanco);
+}
+
+.btn-verde:hover {
+  background-color: var(--color-verde-hover);
+}
+
+/* Botón blanco con borde */
+.btn-outline {
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-tarjeta);
+  color: #111111;
+}
+
+.btn-outline:hover {
+  background-color: #f1f1f1;
+}
+
+.icono-flecha {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 768px) {
+  .titulo-principal {
+    font-size: 1.75rem;
+  }
+
+  .tarjeta-registro {
+    padding: 20px 18px 22px;
+  }
+
+  .grid-formulario {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pagina-registro {
+    padding: 14px;
+  }
+
+  .hero-registro {
+    margin-bottom: 22px;
+  }
+
+  .grid-formulario {
+    grid-template-columns: 1fr;
+  }
+
+  .grupo-ancho-completo,
+  .grupo-ancho-medio {
+    grid-column: auto;
+  }
+
+  .acciones-formulario {
+    grid-template-columns: 1fr;
+  }
+
+  .titulo-principal {
+    font-size: 1.55rem;
+  }
+
+  .subtitulo {
+    font-size: 0.94rem;
+  }
+}
