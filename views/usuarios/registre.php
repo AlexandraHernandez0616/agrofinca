@@ -3,109 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AgroFinca</title>
-  <link rel="stylesheet" href="styles/registre.css" />
+  <title>AgroFinca - Solicitud de Registro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Añadimos ?v=2.0 para cache busting inmediato -->
+  <link rel="stylesheet" href="styles/registre.css?v=2.0" />
 </head>
 <body>
+  
+  <div class="page-background" style="background-image: url('../../img/hero_bg.png');">
+    <div class="bg-overlay"></div>
+  </div>
+
   <!-- Contenedor principal de la página -->
   <main class="pagina-registro">
 
-    <!-- Encabezado superior -->
-    <section class="hero-registro">
-      <!-- Logo circular superior -->
-      <div class="icono-circulo">
-      <img src="../../img/logo.png" alt="Logo del sistema" class="logo-img" />
-      </div>
-
-      <h1 class="titulo-principal">Solicitud de Registro</h1>
-      <p class="subtitulo">
-        Completa el formulario para solicitar acceso como trabajador
-      </p>
-    </section>
-
     <!-- Tarjeta principal del formulario -->
     <section class="tarjeta-registro">
-      <h2 class="titulo-bloque">Datos del Trabajador</h2>
-      <p class="texto-ayuda">
-        Tu solicitud quedará pendiente de aprobación por el mayordomo
-      </p>
+      
+      <!-- Encabezado interior -->
+      <div class="hero-registro">
+        <a href="../../public/index.php" class="logo-vector">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20 16 4"/><path d="M7 20 12 4"/><path d="M3 20 8 4"/><path d="M22 20H2"/><path d="M14 16h6"/></svg>
+        </a>
+        <h1 class="titulo-principal">Solicitud de Registro</h1>
+        <p class="subtitulo">
+          Completa el formulario para solicitar acceso como trabajador
+        </p>
+      </div>
 
-      <form class="formulario-registro">
+      <form class="formulario-registro" action="../../controllers/UsuarioController.php" method="POST">
+
         <!-- Sección de datos personales -->
         <div class="seccion-formulario">
-          <h3 class="subtitulo-seccion">Datos Personales</h3>
+          <div class="seccion-header">
+            <span class="icono-seccion">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <h3 class="subtitulo-seccion">Datos Personales</h3>
+          </div>
 
           <div class="grid-formulario">
             <div class="grupo-campo">
-              <label for="nombres">Nombres *</label>
-              <input type="text" id="nombres" name="nombres" />
+              <label for="nombres">Nombres <span class="req">*</span></label>
+              <input type="text" id="nombres" name="nombres" placeholder="Tus nombres" required />
             </div>
 
             <div class="grupo-campo">
-              <label for="apellidos">Apellidos *</label>
-              <input type="text" id="apellidos" name="apellidos" />
+              <label for="apellidos">Apellidos <span class="req">*</span></label>
+              <input type="text" id="apellidos" name="apellidos" placeholder="Tus apellidos" required />
             </div>
 
             <div class="grupo-campo">
-              <label for="documento">Documento *</label>
-              <input type="text" id="documento" name="documento" />
+              <label for="documento">Documento <span class="req">*</span></label>
+              <input type="text" id="documento" name="documento" placeholder="Ej: 1012345678" required />
             </div>
 
             <div class="grupo-campo">
-              <label for="eps">telefono *</label>
-              <input type="text" id="telefono" name="eps" />
+              <label for="telefono">Teléfono <span class="req">*</span></label>
+              <input type="text" id="telefono" name="telefono" placeholder="Ej: 300 123 4567" required />
             </div>
 
             <div class="grupo-campo">
-              <label for="eps">EPS *</label>
-              <input type="text" id="eps" name="eps" />
+              <label for="eps">EPS <span class="req">*</span></label>
+              <input type="text" id="eps" name="eps" placeholder="Ej: Sanitas, Sura..." required />
             </div>
 
-            <!-- Campo que ocupa solo la primera columna, como en la imagen -->
-            <div class="grupo-campo grupo-ancho-medio">
-              <label for="rh">RH *</label>
-              <input type="text" id="rh" name="rh" placeholder="Ej: O+, A-, etc." />
+            <div class="grupo-campo">
+              <label for="RH">Tipo de Sangre (RH) <span class="req">*</span></label>
+              <input type="text" id="RH" name="RH" placeholder="Ej: O+, A-" required />
             </div>
           </div>
         </div>
 
-        <!-- Línea divisoria -->
         <hr class="separador" />
 
         <!-- Sección de credenciales -->
         <div class="seccion-formulario">
-          <h3 class="subtitulo-seccion">Credenciales de Acceso</h3>
+          <div class="seccion-header">
+            <span class="icono-seccion">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <h3 class="subtitulo-seccion">Credenciales de Acceso</h3>
+          </div>
 
           <div class="grid-formulario">
-            <!-- Campo que ocupa todo el ancho -->
             <div class="grupo-campo grupo-ancho-completo">
-              <label for="usuario">Nombre de Usuario *</label>
-              <input type="text" id="usuario" name="usuario" />
+              <label for="nombre_de_usuario">Nombre de Usuario <span class="req">*</span></label>
+              <input type="text" id="nombre_de_usuario" name="nombre_de_usuario" placeholder="Crea un nombre de usuario" required />
             </div>
 
             <div class="grupo-campo">
-              <label for="password">Contraseña *</label>
-              <input type="password" id="password" name="password" />
+              <label for="contraseña">Contraseña <span class="req">*</span></label>
+              <input type="password" id="contraseña" name="contraseña" placeholder="••••••••" required />
             </div>
 
             <div class="grupo-campo">
-              <label for="confirmar-password">Confirmar Contraseña *</label>
-              <input type="password" id="confirmar-password" name="confirmar-password" />
+              <label for="confirmar_contraseña">Confirmar Contraseña <span class="req">*</span></label>
+              <input type="password" id="confirmar_contraseña" name="confirmar_contraseña" placeholder="••••••••" required />
             </div>
           </div>
         </div>
 
+        <!-- Alerta info -->
+        <div class="info-alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          Tu solicitud quedará pendiente de revisión y aprobación por el administrador (mayordomo).
+        </div>
+
         <!-- Botones inferiores -->
         <div class="acciones-formulario">
+          <a href="login.php" class="btn btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            Volver al login
+          </a>
           <button type="submit" class="btn btn-verde">
             Enviar Solicitud
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </button>
         </div>
 
-        <div class="btn btn-outline">
-            <span class="icono-flecha">←</span>
-            Volver al Login <a href="login.php"</a>
-        </div>
       </form>
     </section>
   </main>

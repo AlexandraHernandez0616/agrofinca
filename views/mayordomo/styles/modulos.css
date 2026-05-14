@@ -1,0 +1,319 @@
+/* ============================================================
+   ARCHIVO: views/mayordomo/styles/modulos.css
+   PROPÓSITO: Estilos compartidos para todos los módulos
+              del panel del mayordomo.
+   Se carga ADEMÁS de dashboard.css en cada módulo:
+     $css_extra = 'styles/modulos.css';
+============================================================ */
+
+/* ── Cabecera del módulo ─────────────────────────────────── */
+.mod-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.mod-titulo    { font-size: 22px; font-weight: 700; color: #111827; margin: 0; }
+.mod-subtitulo { font-size: 14px; color: #6b7280; margin: 4px 0 0; }
+
+/* ── Botones ─────────────────────────────────────────────── */
+.btn-primary {
+  background: #2e9e4f; color: #fff;
+  border: none; padding: 9px 18px;
+  border-radius: 8px; font-size: 14px;
+  font-weight: 600; cursor: pointer;
+  white-space: nowrap; transition: background 0.2s;
+  text-decoration: none; display: inline-flex;
+  align-items: center; gap: 6px;
+}
+.btn-primary:hover { background: #237a3d; }
+
+.btn-aprobar {
+  background: #2e9e4f; color: #fff;
+  border: none; padding: 7px 14px;
+  border-radius: 7px; font-size: 13px;
+  font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center;
+  gap: 5px; transition: background 0.2s;
+  white-space: nowrap;
+}
+.btn-aprobar:hover { background: #237a3d; }
+
+.btn-rechazar {
+  background: #e53935; color: #fff;
+  border: none; padding: 7px 14px;
+  border-radius: 7px; font-size: 13px;
+  font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center;
+  gap: 5px; transition: background 0.2s;
+  white-space: nowrap;
+}
+.btn-rechazar:hover { background: #c62828; }
+
+.btn-cancelar {
+  background: #f3f4f6; color: #374151;
+  border: none; height: 40px; padding: 0 16px;
+  border-radius: 8px; font-size: 14px;
+  font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-cancelar:hover { background: #e5e7eb; }
+
+.btn-icono {
+  background: none; border: none;
+  cursor: pointer; font-size: 16px;
+  padding: 4px; border-radius: 6px;
+  transition: background 0.15s;
+}
+.btn-icono:hover { background: #f3f4f6; }
+
+/* ── Tabla ───────────────────────────────────────────────── */
+.tabla-wrap {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.tabla thead tr {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+.tabla th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 13px;
+}
+.tabla td {
+  padding: 12px 16px;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+.tabla tbody tr:last-child td { border-bottom: none; }
+.tabla tbody tr:hover { background: #f9fafb; }
+.tabla-vacia {
+  text-align: center;
+  color: #9ca3af;
+  padding: 40px !important;
+  font-size: 14px;
+}
+
+/* ── Badges de estado ────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-activo    { background: #dcfce7; color: #166534; }
+.badge-inactivo  { background: #f3f4f6; color: #6b7280; }
+.badge-labor     { background: #dbeafe; color: #1e40af; }
+.badge-pendiente { background: #fef9c3; color: #854d0e; }
+.badge-completa  { background: #dcfce7; color: #166534; }
+.badge-incompleta{ background: #fef3c7; color: #92400e; }
+
+/* ── Acciones en tabla ───────────────────────────────────── */
+.acciones-td {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ── Modales ─────────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.modal-visible { display: flex; }
+
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.modal-titulo {
+  font-size: 18px; font-weight: 700;
+  margin: 0 0 6px; color: #111827;
+}
+.modal-subtitulo {
+  font-size: 13px; color: #6b7280;
+  margin: 0 0 20px;
+}
+
+/* ── Formulario en modal ─────────────────────────────────── */
+.form-group {
+  display: flex; flex-direction: column;
+  gap: 6px; margin-bottom: 14px;
+}
+.form-group label {
+  font-size: 13px; font-weight: 600; color: #374151;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px; color: #111827;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+.form-group input,
+.form-group select { height: 40px; }
+.form-group textarea { height: 80px; resize: vertical; }
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: #2e9e4f; }
+
+.modal-acciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: 8px;
+}
+.modal-acciones-1 {
+  margin-top: 8px;
+}
+
+/* ── Mensajes de respuesta ───────────────────────────────── */
+.msg-form {
+  font-size: 13px; font-weight: 500;
+  padding: 8px 12px; border-radius: 6px;
+  margin-bottom: 12px; min-height: 20px;
+}
+.msg-ok    { background: #dcfce7; color: #166534; }
+.msg-error { background: #fdecea; color: #b91c1c; }
+
+/* ── Detalle en modal ────────────────────────────────────── */
+.detalle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px; margin-bottom: 20px;
+}
+.detalle-item { display: flex; flex-direction: column; gap: 4px; }
+.detalle-label {
+  font-size: 11px; font-weight: 600;
+  color: #9ca3af; text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.detalle-valor { font-size: 14px; color: #111827; font-weight: 500; }
+
+/* ── Buscador ────────────────────────────────────────────── */
+.buscador-wrap { margin-bottom: 16px; }
+.buscador {
+  width: 100%; height: 42px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px; padding: 0 16px;
+  font-size: 14px; color: #374151;
+  background: #fff; outline: none;
+  transition: border-color 0.2s;
+}
+.buscador:focus { border-color: #2e9e4f; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .modal-acciones { grid-template-columns: 1fr; }
+  .detalle-grid   { grid-template-columns: 1fr; }
+  .acciones-td    { flex-direction: column; }
+  .modal          { padding: 20px 16px; }
+}
+
+/* ── Tarjetas estadísticas (resumen de módulos) ──────────── */
+.lote-card-stat {
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lote-stat-verde   { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.lote-stat-azul    { background: #eff6ff; border: 1px solid #bfdbfe; }
+.lote-stat-amarillo{ background: #fffbeb; border: 1px solid #fde68a; }
+.lote-stat-label   { font-size: 12px; color: #6b7280; font-weight: 500; }
+.lote-stat-valor   { font-size: 26px; font-weight: 700; color: #111827; }
+
+/* ── Badge cultivo ───────────────────────────────────────── */
+.badge-cultivo {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* ── Notif overlay (mayordomo) ───────────────────────────── */
+.notif-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 300;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+}
+.notif-overlay.notif-overlay-visible { display: flex; }
+.notif-panel {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.notif-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.notif-panel-header-left h2 { font-size: 18px; font-weight: 700; margin: 0 0 4px; }
+.notif-panel-header-left p  { font-size: 13px; color: #6b7280; margin: 0; }
+.btn-cerrar-notif {
+  background: none; border: none; font-size: 18px;
+  cursor: pointer; color: #6b7280; padding: 4px;
+}
+.btn-cerrar-notif:hover { color: #111827; }
+.notif-list { overflow-y: auto; flex: 1; padding: 8px 0; }
+.notif-empty { padding: 32px 24px; font-size: 14px; color: #9ca3af; text-align: center; }
+
+/* ── Animación de escritura (typing indicator) ───────────── */
+@keyframes typingPulse {
+  0%   { box-shadow: 0 0 0 0   rgba(46,158,79,0.45); border-color: #2e9e4f; }
+  50%  { box-shadow: 0 0 0 4px rgba(46,158,79,0.15); border-color: #2e9e4f; }
+  100% { box-shadow: 0 0 0 0   rgba(46,158,79,0);    border-color: #2e9e4f; }
+}
+input.typing-active,
+textarea.typing-active,
+select.typing-active {
+  animation: typingPulse 0.6s ease-out;
+  border-color: #2e9e4f !important;
+  outline: none;
+}
