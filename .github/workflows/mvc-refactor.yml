@@ -1,0 +1,190 @@
+name: MVC Refactor
+
+on:
+  push:
+    branches:
+      - refactor/mvc-puro
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    if: ${{ !contains(github.event.head_commit.message, '[mvc-refactor]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: refactor/mvc-puro
+          fetch-depth: 0
+
+      - name: Convert direct views into MVC-rendered templates
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('.').resolve()
+          views_root = root / 'views'
+          bootstrap_dir = root / 'controllers' / 'page_bootstraps'
+          bootstrap_dir.mkdir(parents=True, exist_ok=True)
+
+          mvc_controller = root / 'controllers' / 'MvcPageController.php'
+          mvc_controller.write_text("""<?php
+/**
+ * Controlador frontal para renderizar páginas MVC.
+ *
+ * Las vistas públicas mantienen sus mismas rutas para no cambiar enlaces,
+ * formularios, estilos ni JavaScript. Cuando una vista se abre directamente,
+ * delega aquí la validación, carga de datos y preparación de variables.
+ */
+class MvcPageController
+{
+    private string $rootPath;
+
+    public function __construct()
+    {
+        $this->rootPath = dirname(__DIR__);
+    }
+
+    public function render(string $view): void
+    {
+        $view = trim($view, '/');
+
+        if (!preg_match('/^[a-zA-Z0-9_\\/-]+$/', $view)) {
+            http_response_code(400);
+            exit('Vista no válida');
+        }
+
+        $viewPath = $this->rootPath . '/views/' . $view . '.php';
+        $bootstrapPath = __DIR__ . '/page_bootstraps/' . str_replace('/', '_', $view) . '.php';
+
+        if (!is_file($viewPath) || !is_file($bootstrapPath)) {
+            http_response_code(404);
+            exit('Vista no encontrada');
+        }
+
+        if (!defined('AGROFINCA_MVC_RENDER')) {
+            define('AGROFINCA_MVC_RENDER', true);
+        }
+
+        require $bootstrapPath;
+        require $viewPath;
+    }
+}
+?>
+""", encoding='utf-8')
+
+          def split_first_php_block(text: str):
+              bom = ''
+              if text.startswith('\ufeff'):
+                  bom = '\ufeff'
+                  text2 = text[1:]
+              else:
+                  text2 = text
+              if not text2.startswith('<?php'):
+                  return None
+              end = text2.find('?>')
+              if end == -1:
+                  return None
+              block = text2[len('<?php'):end]
+              rest = text2[end + len('?>'):]
+              return bom, block, rest
+
+          def transform_bootstrap(block: str, view_dir: str) -> str:
+              code = block
+              # Ajustar rutas que antes dependían del directorio de la vista.
+              code = code.replace("__DIR__ . '/../../", "dirname(__DIR__, 2) . '/")
+              code = code.replace('__DIR__ . "/../../', 'dirname(__DIR__, 2) . "/')
+              code = code.replace("__DIR__ . '/includes/", "$__view_dir . '/includes/")
+              code = code.replace('__DIR__ . "/includes/', '$__view_dir . "/includes/')
+              # Evitar warning si el controlador ya inició sesión en algún flujo futuro.
+              code = re.sub(r'\bsession_start\s*\(\s*\)\s*;', "if (session_status() === PHP_SESSION_NONE) { session_start(); }", code)
+              return code
+
+          target_dirs = ['admin', 'mayordomo', 'trabajador']
+          changed = []
+
+          for section in target_dirs:
+              section_dir = views_root / section
+              if not section_dir.exists():
+                  continue
+              for file in sorted(section_dir.glob('*.php')):
+                  rel_view = f'{section}/{file.stem}'
+                  text = file.read_text(encoding='utf-8-sig')
+                  parsed = split_first_php_block(file.read_text(encoding='utf-8'))
+                  if not parsed:
+                      continue
+                  bom, block, rest = parsed
+                  marker_source = block.lower()
+                  should_convert = any(token in marker_source for token in [
+                      'new database',
+                      '/../../models/',
+                      '/../../controllers/',
+                      'session_start',
+                  ])
+                  if not should_convert:
+                      continue
+
+                  view_dir_php = f"dirname(__DIR__, 2) . '/views/{section}'"
+                  transformed = transform_bootstrap(block, section)
+                  bootstrap_name = rel_view.replace('/', '_') + '.php'
+                  bootstrap_path = bootstrap_dir / bootstrap_name
+                  bootstrap_path.write_text("<?php\n"
+                      "/**\n"
+                      f" * Bootstrap MVC generado desde views/{rel_view}.php.\n"
+                      " * Aquí queda la validación, carga de dependencias y preparación de variables.\n"
+                      " */\n"
+                      "if (!defined('AGROFINCA_MVC_RENDER')) { exit; }\n"
+                      f"$__view_dir = {view_dir_php};\n"
+                      f"{transformed.rstrip()}\n"
+                      "?>\n", encoding='utf-8')
+
+                  guard = "<?php\n"
+                  guard += "/**\n"
+                  guard += " * Vista MVC: no carga modelos ni base de datos directamente.\n"
+                  guard += " * Si se accede por URL, delega al controlador de página.\n"
+                  guard += " */\n"
+                  guard += "if (!defined('AGROFINCA_MVC_RENDER')) {\n"
+                  guard += "    require_once __DIR__ . '/../../controllers/MvcPageController.php';\n"
+                  guard += f"    (new MvcPageController())->render('{rel_view}');\n"
+                  guard += "    exit;\n"
+                  guard += "}\n"
+                  guard += "?>"
+
+                  file.write_text(bom + guard + rest, encoding='utf-8')
+                  changed.append(str(file.relative_to(root)))
+
+          report = root / 'MVC_REFACTOR_REPORT.md'
+          report.write_text("# Refactor MVC\n\n"
+              "Esta rama convierte las vistas principales de administrador, mayordomo y trabajador en plantillas MVC.\n\n"
+              "## Cambios aplicados\n\n"
+              "- Se agregó `controllers/MvcPageController.php` como controlador frontal de renderizado.\n"
+              "- Se generaron bootstraps en `controllers/page_bootstraps/` con validación de sesión, carga de modelos/controladores y preparación de variables.\n"
+              "- Las vistas convertidas ya no cargan modelos ni conexión a base de datos directamente; delegan al controlador cuando se abren por URL.\n"
+              "- No se modificó el HTML, CSS ni JavaScript visual de los módulos; solo se cambió la capa PHP inicial de carga de datos.\n\n"
+              "## Vistas convertidas\n\n" + ''.join(f"- `{p}`\n" for p in changed) + "\n", encoding='utf-8')
+
+          print('Vistas convertidas:')
+          for item in changed:
+              print('-', item)
+          PY
+
+      - name: Validate PHP syntax
+        run: |
+          set -e
+          find controllers views -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Commit generated MVC refactor
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add controllers views MVC_REFACTOR_REPORT.md
+          git commit -m "refactor: convert views to MVC page controllers [mvc-refactor]"
+          git push origin refactor/mvc-puro
