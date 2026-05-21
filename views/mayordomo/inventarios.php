@@ -52,7 +52,7 @@ require_once __DIR__ . '/includes/sidebar.php';
 <div id="msgHerramienta" class="msg-form" style="display:none;"></div>
 <div class="tabla-wrap">
   <table class="tabla">
-    <thead><tr><th>Foto</th><th>ID</th><th>Nombre</th><th>Cantidad</th><th>Estado</th><th>Fecha Registro</th><th>Acciones</th></tr></thead>
+    <thead><tr><th>Foto</th><th>Nombre</th><th>Cantidad</th><th>Estado</th><th>Fecha Registro</th><th>Acciones</th></tr></thead>
     <tbody>
       <?php if (empty($herramientas)): ?>
         <tr><td colspan="7" class="tabla-vacia">No hay herramientas registradas</td></tr>
@@ -69,7 +69,6 @@ require_once __DIR__ . '/includes/sidebar.php';
       ?>
         <tr>
           <td><?php if($fotoSrc): ?><img src="<?=$fotoSrc?>" class="tabla-foto" onclick="verFoto('<?=$fotoSrc?>','<?=addslashes($h['nombre'])?>')"><?php else: ?><div class="tabla-foto-vacia">📷</div><?php endif; ?></td>
-          <td><?=$h['id_herramienta']?></td>
           <td><?=htmlspecialchars($h['nombre'])?></td>
           <td><?=$h['cantidad_total']?></td>
           <td><span class="badge <?=$cls?>"><?=$label?></span></td>
@@ -91,7 +90,7 @@ require_once __DIR__ . '/includes/sidebar.php';
 <div id="msgInsumo" class="msg-form" style="display:none;"></div>
 <div class="tabla-wrap">
   <table class="tabla">
-    <thead><tr><th>Foto</th><th>ID</th><th>Nombre</th><th>Stock Actual</th><th>Unidad</th><th>Stock Mínimo</th><th>Vencimiento</th><th>Estado</th><th>Fecha Registro</th><th>Acciones</th></tr></thead>
+    <thead><tr><th>Foto</th><th>Nombre</th><th>Stock Actual</th><th>Unidad</th><th>Stock Mínimo</th><th>Vencimiento</th><th>Estado</th><th>Fecha Registro</th><th>Acciones</th></tr></thead>
     <tbody>
       <?php if (empty($insumos)): ?>
         <tr><td colspan="10" class="tabla-vacia">No hay insumos registrados</td></tr>
@@ -103,7 +102,6 @@ require_once __DIR__ . '/includes/sidebar.php';
       ?>
         <tr>
           <td><?php if($fotoSrc): ?><img src="<?=$fotoSrc?>" class="tabla-foto" onclick="verFoto('<?=$fotoSrc?>','<?=addslashes($i['nombre'])?>')"><?php else: ?><div class="tabla-foto-vacia">📷</div><?php endif; ?></td>
-          <td><?=$i['id_insumo']?></td>
           <td><?=htmlspecialchars($i['nombre'])?></td>
           <td><strong><?=number_format($i['stock_actual'],2)?></strong></td>
           <td><?=htmlspecialchars($i['unidad_medida']??'—')?></td>

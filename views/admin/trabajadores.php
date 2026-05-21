@@ -30,10 +30,6 @@ $titulo_pagina = 'Trabajadores - AgroFinca';
 $modulo_activo = 'trabajadores';
 $css_path      = 'styles/dashboard.css';
 $css_extra     = 'styles/modulos.css';
-$titulo_pagina = 'Trabajadores - AgroFinca';
-$modulo_activo = 'trabajadores';
-$css_path      = 'styles/dashboard.css';
-$css_extra     = 'styles/modulos.css';
 require_once __DIR__ . '/includes/sidebar.php';
 ?>
 

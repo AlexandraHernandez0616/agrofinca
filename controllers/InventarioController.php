@@ -39,6 +39,8 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['rol'] !== 'ADMINISTRADOR') {
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../models/Inventario.php';
 
+header('Content-Type: application/json');
+
 $db     = (new Database())->conectar();
 $model  = new Inventario($db);
 $accion = $_POST['accion'] ?? '';

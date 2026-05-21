@@ -43,12 +43,12 @@ class MayordomoDashboardController {
 
             // Fila 2 de tarjetas
             'solicitudes_pendientes'=> $this->contar("SELECT COUNT(*) FROM solicitud_registro WHERE estado = 'PENDIENTE'"),
-            'tareas_pendientes'     => $this->contar("SELECT COUNT(*) FROM tarea WHERE id_mayordomo = {$this->id} AND estado_tarea = 'PENDIENTE'"),
-            'tareas_en_progreso'    => $this->contar("SELECT COUNT(*) FROM tarea WHERE id_mayordomo = {$this->id} AND estado_tarea = 'EN_PROGRESO'"),
+            'tareas_pendientes'     => $this->contarConId("SELECT COUNT(*) FROM tarea WHERE id_mayordomo = :id AND estado_tarea = 'PENDIENTE'"),
+            'tareas_en_progreso'    => $this->contarConId("SELECT COUNT(*) FROM tarea WHERE id_mayordomo = :id AND estado_tarea = 'EN_PROGRESO'"),
 
             // Fila 3 de tarjetas
-            'prestamos_pendientes'  => $this->contar("SELECT COUNT(*) FROM prestamo WHERE id_mayordomo = {$this->id} AND estado_prestamo = 'PENDIENTE'"),
-            'produccion_hoy'        => $this->sumar("SELECT COALESCE(SUM(p.cantidad),0) FROM produccion p INNER JOIN tarea_trabajador tt ON tt.id_trabajador = p.id_trabajador INNER JOIN tarea t ON t.id_tarea = tt.id_tarea WHERE t.id_mayordomo = {$this->id} AND p.fecha = CURDATE()"),
+            'prestamos_pendientes'  => $this->contarConId("SELECT COUNT(*) FROM prestamo WHERE id_mayordomo = :id AND estado_prestamo = 'PENDIENTE'"),
+            'produccion_hoy'        => $this->sumarConId("SELECT COALESCE(SUM(p.cantidad),0) FROM produccion p INNER JOIN tarea_trabajador tt ON tt.id_trabajador = p.id_trabajador INNER JOIN tarea t ON t.id_tarea = tt.id_tarea WHERE t.id_mayordomo = :id AND p.fecha = CURDATE()"),
 
             // Panel notificaciones
             'notificaciones'        => $this->obtenerNotificaciones(),
@@ -62,10 +62,30 @@ class MayordomoDashboardController {
         } catch (Exception $e) { return 0; }
     }
 
+    /** COUNT con parámetro :id — retorna 0 si hay error */
+    private function contarConId($sql) {
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+            $stmt->execute();
+            return (int) $stmt->fetchColumn();
+        } catch (Exception $e) { return 0; }
+    }
+
     /** SUM genérico — retorna string formateado */
     private function sumar($sql) {
         try {
             return number_format((float) $this->db->query($sql)->fetchColumn(), 0, '.', ',');
+        } catch (Exception $e) { return '0'; }
+    }
+
+    /** SUM con parámetro :id — retorna string formateado */
+    private function sumarConId($sql) {
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+            $stmt->execute();
+            return number_format((float) $stmt->fetchColumn(), 0, '.', ',');
         } catch (Exception $e) { return '0'; }
     }
 
